@@ -1,0 +1,19 @@
+Web Crawler
+  http://lyle.smu.edu/~fmoore
+
+  Need to
+    use robots.txt file
+    stem words
+    save words from each page without HTML markup with unique docID
+    create a words frequency list from the saved words - report top 20
+
+  input
+    N - number of pages to retrieve
+    stop words file - words to exclude
+
+  output
+    list of all pages in the test data
+    list of all outgoing links
+    list of broken links
+    number of JPEG files in the test data
+    top 20 words with document frequency
