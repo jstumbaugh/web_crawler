@@ -3,6 +3,7 @@ import robotparser
 import urlparse
 from bs4 import BeautifulSoup
 import re
+from time import localtime, strftime
 
 
 _ROOT_ = 'http://lyle.smu.edu/~fmoore/'
@@ -14,8 +15,10 @@ class Crawler:
         This method removes the base url
         EX. http://lyle.smu.edu/~fmoore/schedule.htm => schedule.htm
         """
-        link = re.compile(_ROOT_).sub('', url)
-        return re.compile('\.\.').sub('', link)
+        url = re.compile(_ROOT_).sub('', url)
+        url = re.compile('http://lyle.smu.edu/~fmoore').sub('', url)
+        url = re.compile('index.*').sub('', url)
+        return re.compile('\.\./').sub('', url)
 
     def fetch(self, url) :
         """
@@ -31,7 +34,6 @@ class Crawler:
         urls = []
         soup = BeautifulSoup(text, 'html.parser')
         for atag in soup.find_all('a'):
-            # get all links within the page
             urls.append(atag.get('href'))
         return urls
 
@@ -39,7 +41,7 @@ class Crawler:
         """
         This method will check if the URL is an external link outside the root domain
         """
-        if re.compile('.+lyle.smu.edu/~fmoore/.+').match(url):
+        if re.compile('.*lyle.smu.edu/~fmoore.*').match(url):
             return False
         elif re.compile('mailto:').match(url) :
             return True
@@ -67,6 +69,48 @@ class Crawler:
         else :
             return True
 
+    def clean_visited_links(self, visited) :
+        """
+        This method will add the root URL to all of the visited links for visual apperance
+        """
+        pretty_urls = []
+        for link in visited :
+            pretty_urls.append(_ROOT_ + link)
+        return pretty_urls
+
+    def write_output(self, visited, external, jpeg, broken) :
+        """
+        This method will write the output of the crawler to output.txt
+        """
+        f = open('output.txt', 'w')
+        f.write('Output of Jason and Nicole\'s web crawler.\n')
+        f.write('Current Time: ')
+        f.write(strftime("%Y-%m-%d %H:%M:%S", localtime()))
+        f.write('\n\n')
+        
+        # Visited links
+        f.write('Visted Links: (' + str(len(visited)) + ' total)\n')
+        for link in visited :
+            f.write(link + '\n')
+        f.write('\n')
+
+        # External links
+        f.write('External Links: (' + str(len(external)) + ' total)\n')
+        for link in external :
+            f.write(link + '\n')
+        f.write('\n')
+
+        # JPEG links
+        f.write('JPEG Links: (' + str(len(jpeg)) + ' total)\n')
+        for link in jpeg :
+            f.write(link + '\n')
+        f.write('\n')
+
+        # Broken links
+        f.write('Broken Links: (' + str(len(broken)) + ' total)\n')
+        for link in broken :
+            f.write(link + '\n')
+        f.write('\n')
 
 
     def crawl(self) :
@@ -88,7 +132,8 @@ class Crawler:
         while urlqueue :
             # get flast element in urlqueue
             url = urlqueue.pop(-1)
-            print url
+            if self.clean_url(url) in visited:
+                continue
 
             # check if we can fetch the page first
             if parser.can_fetch('*', urlparse.urljoin('/', url)) :
@@ -96,13 +141,13 @@ class Crawler:
                 page = self.fetch(url)
 
                 # add page to visited links
-                visited.append(url)
+                visited.append(self.clean_url(url))
 
                 # get urls from page
                 new_urls = self.extract_urls(page)
                 for new_url in new_urls :
                     # check if we have already visited it or are going to
-                    if new_url not in visited and new_url not in urlqueue and new_url not in jpeg :
+                    if new_url not in visited and new_url not in urlqueue and new_url not in jpeg and new_url not in broken and new_url not in external :
                         # check if it is an external link
                         if self.external_link(new_url) :
                             external.append(new_url)
@@ -112,26 +157,17 @@ class Crawler:
                             broken.append(new_url)
                         else :
                             urlqueue.append(new_url)
-        
-
-        # print self.broken_link('http://lyle.smu.edu/~fmoore/misc/urlexample1.htm')
-
                 ####################### ADD TO INDEX HERE #######################
 
+                #################################################################
             # end if
         # end while
-        print 'VISITED'
-        print visited
-        print
-        print 'EXTERNAL'
-        print external
-        print
-        print 'JPEG'
-        print jpeg
-        print
-        print 'BROKEN'
-        print broken
-        print
+
+        # clean the visited links for visual appearance
+        visited = self.clean_visited_links(visited)
+
+        # write to output file
+        self.write_output(visited, external, jpeg, broken)
 
     # end crawl method
 # end crawler class

@@ -1,0 +1,48 @@
+Output of Jason and Nicole's web crawler.
+Current Time: 2016-03-11 20:32:58
+
+Visted Links: (15 total)
+http://lyle.smu.edu/~fmoore/
+http://lyle.smu.edu/~fmoore/CSE7337_syllabus.pdf
+http://lyle.smu.edu/~fmoore/schedule.htm
+http://lyle.smu.edu/~fmoore/misc/excel-examples.html
+http://lyle.smu.edu/~fmoore/misc/review1.pptx
+http://lyle.smu.edu/~fmoore/misc/urlexample1.htm
+http://lyle.smu.edu/~fmoore/misc/word_morphing_puzzle.html
+http://lyle.smu.edu/~fmoore/misc/levenshtein.html
+http://lyle.smu.edu/~fmoore/misc/projectteams.htm
+http://lyle.smu.edu/~fmoore/misc/jaccard_example.pdf
+http://lyle.smu.edu/~fmoore/misc/webcrawler.htm
+http://lyle.smu.edu/~fmoore/misc/porter_stemmer_example.html
+http://lyle.smu.edu/~fmoore/misc/algorithm-1-7.pdf
+http://lyle.smu.edu/~fmoore/misc/letter_distribution.pdf
+http://lyle.smu.edu/~fmoore/spring2016_intro_survey.html
+
+External Links: (19 total)
+mailto:fmoore@lyle.smu.edu
+https://courses.smu.edu
+http://www.gedpage.com/soundex.html
+http://www.smu.edu/EnrollmentServices/Registrar/Enrollment/FinalExamSchedule/Spring2016
+page113.xlsx
+page113-ex2.xlsx
+http://java-source.net/open-source/crawlers
+http://code.google.com/p/crawler4j/
+http://download.oracle.com/javase/tutorial/essential/regex/index.html
+http://htmlparser.sourceforge.net/
+http://download.oracle.com/javase/tutorial/networking/urls/index.html
+http://www.robotstxt.org/robotstxt.html
+http://tartarus.org/~martin/PorterStemmer/
+http://en.wikipedia.org/wiki/Document_classification
+http://en.wikipedia.org/wiki/Stop_words
+http://en.wikipedia.org/wiki/Tf*idf
+http://lucene.apache.org/core/
+http://search.carrot2.org/stable/search
+http://9ol.es/porter_js_demo.html
+
+JPEG Links: (2 total)
+misc/room-facing-to-back.jpg
+misc/room-facing-to-front.jpg
+
+Broken Links: (1 total)
+http://lyle.smu.edu/~fmoore/this_aint_gonna_work.htm
+
