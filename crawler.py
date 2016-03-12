@@ -1,12 +1,31 @@
-import requests
-import robotparser
-import urlparse
+import requests, robotparser, urlparse, re, os, string
 from bs4 import BeautifulSoup
-import re
+from HTMLParser import HTMLParser
 from time import localtime, strftime
 
-
 _ROOT_ = 'http://lyle.smu.edu/~fmoore/'
+
+class MLStripper(HTMLParser):
+    """
+    This class removes the HTML tags from raw HTML text.
+    http://stackoverflow.com/questions/753052/strip-html-from-strings-in-python
+    """
+    def __init__(self):
+        self.reset()
+        self.fed = []
+    def handle_data(self, d):
+        self.fed.append(d)
+    def get_data(self):
+        return ''.join(self.fed)
+
+def strip_tags(html):
+    """
+    This class removes the HTML tags from raw HTML text.
+    http://stackoverflow.com/questions/753052/strip-html-from-strings-in-python
+    """
+    s = MLStripper()
+    s.feed(html)
+    return s.get_data()
 
 class Crawler:
 
@@ -78,6 +97,31 @@ class Crawler:
             pretty_urls.append(_ROOT_ + link)
         return pretty_urls
 
+    def remove_extra_whitespace(self, text) :
+        """
+        This method removes more than one white space between words.
+        """
+        p = re.compile(r'\s+')
+        return p.sub(' ', text)
+
+    def remove_punctuation(self, text) :
+        """
+        This method uses regex to remove the punctuation in text.
+        http://stackoverflow.com/questions/265960/best-way-to-strip-punctuation-from-a-string-in-python
+        """
+        exclude = set(string.punctuation)
+        return ''.join(ch for ch in text if ch not in exclude)
+
+    def prepare_text(self, text) :
+        """
+        This method prepares the raw HTML text so that it can be stemmed.
+        """
+        text = text.lower()
+        text = strip_tags(text)
+        text = self.remove_punctuation(text)
+        text = self.remove_extra_whitespace(text)
+        return text
+
     def write_output(self, visited, external, jpeg, broken) :
         """
         This method will write the output of the crawler to output.txt
@@ -139,6 +183,15 @@ class Crawler:
             if parser.can_fetch('*', urlparse.urljoin('/', url)) :
                 # fetch the page
                 page = self.fetch(url)
+
+                # checks to see if url is parsable aka .html, .htm, .txt
+                # if yes, then parse; if no, pass
+                # filename, file_extension = os.path.splitext(url)
+                # if not (file_extension == ".pdf" or file_extension == ".pptx") :
+                #     pagetext = requests.get(url)
+                #     pagetext = pagetext.text
+                #     cleantext = self.prepare_text(pagetext)
+                #     counter += 1
 
                 # add page to visited links
                 visited.append(self.clean_url(url))
