@@ -1,4 +1,3 @@
-# import scrapy
 import requests
 import robotparser
 import urlparse
@@ -6,80 +5,136 @@ from bs4 import BeautifulSoup
 import re
 
 
-ROOT = 'http://lyle.smu.edu/~fmoore/'
+_ROOT_ = 'http://lyle.smu.edu/~fmoore/'
 
 class Crawler:
-    """
-    TODO
-    comments
-    """
 
-    def clean_url(self, url):
+    def clean_url(self, url) :
         """
-        this method removes the base url and mailto: links
+        This method removes the base url
+        EX. http://lyle.smu.edu/~fmoore/schedule.htm => schedule.htm
         """
-        baseurl = re.compile(ROOT)
-        mailto = re.compile('mailto:')
-        return mailto.sub('', baseurl.sub('', url))
+        link = re.compile(_ROOT_).sub('', url)
+        return re.compile('\.\.').sub('', link)
 
-    def external_link(self, link):
+    def fetch(self, url) :
         """
-        This method will check if the url is an external link
+        This method will fetch the contents of the page.
         """
-        # pattern = re.compile(ROOT)
-        if re.compile(ROOT).match(url):
+        r = requests.get(urlparse.urljoin(_ROOT_, self.clean_url(url)))
+        return r.text
+
+    def extract_urls(self, text) :
+        """
+        This method will take the contents of a page and extract all of the URLs on it
+        """
+        urls = []
+        soup = BeautifulSoup(text, 'html.parser')
+        for atag in soup.find_all('a'):
+            # get all links within the page
+            urls.append(atag.get('href'))
+        return urls
+
+    def external_link(self, url) :
+        """
+        This method will check if the URL is an external link outside the root domain
+        """
+        if re.compile('.+lyle.smu.edu/~fmoore/.+').match(url):
+            return False
+        elif re.compile('mailto:').match(url) :
             return True
-        else:
+        else :
+            if requests.get(_ROOT_ + url).status_code == 200 :
+                return False
+            else :
+                return True
+
+    def jpeg_link(self, url) :
+        """
+        This method will check if the link is a JPEG
+        """
+        if re.compile('.*.jpg').match(url):
+            return True
+        else :
             return False
 
+    def broken_link(self, url) :
+        """
+        This method will check if the link is broken.
+        """
+        if requests.get(_ROOT_ + self.clean_url(url)).status_code == 200 :
+            return False
+        else :
+            return True
 
-    def crawl(self):
+
+
+    def crawl(self) :
         """
         This is the main worker method. It will parse the urls, add the words to
         the index, get the next links, and continue looping through the queue.
         """
 
         parser = robotparser.RobotFileParser()
-        parser.set_url(urlparse.urljoin(ROOT, 'robots.txt'))
+        parser.set_url(urlparse.urljoin(_ROOT_, 'robots.txt'))
         parser.read()
 
-        # Add root url to queue
-        queue = [requests.get(ROOT)]
+        # Add _ROOT_ url to queue
+        urlqueue = [_ROOT_]
 
-        # visited links
-        visited = []
+        # visited, external, jpeg, and broken links
+        visited, external, jpeg, broken = [], [], [], []
 
-        # external links
-        external = []
+        while urlqueue :
+            # get flast element in urlqueue
+            url = urlqueue.pop(-1)
+            print url
 
-        # finds the links in the page
-        soup = BeautifulSoup(queue.pop(0).text, 'html.parser')
-        for atag in soup.find_all('a'):
-            # get all links within the page
-            link = atag.get('href')
+            # check if we can fetch the page first
+            if parser.can_fetch('*', urlparse.urljoin('/', url)) :
+                # fetch the page
+                page = self.fetch(url)
 
-            # check if we can access the link
-            if parser.can_fetch('*', urlparse.urljoin('/', link)):
-                # clean the link
-                clean_link = self.clean_url(link)
-                # check if in queue or visited links
-                if clean_link in visited:
-                    continue
-                if clean_link in queue:
-                    continue
-                # else not in queue, get text and links on page
-                if external_link(clean_link):
-                    print "external link"
-                    external.append(clean_link)
-                    continue
-                r = requests.get(urlparse(urljoin(ROOT, clean_link)))
-                # print r.text
-                # print
-                """
-                WORKING ON EXTERNAL LINKS RIGHT NOW
-                """
+                # add page to visited links
+                visited.append(url)
 
+                # get urls from page
+                new_urls = self.extract_urls(page)
+                for new_url in new_urls :
+                    # check if we have already visited it or are going to
+                    if new_url not in visited and new_url not in urlqueue and new_url not in jpeg :
+                        # check if it is an external link
+                        if self.external_link(new_url) :
+                            external.append(new_url)
+                        elif self.jpeg_link(new_url) :
+                            jpeg.append(new_url)
+                        elif self.broken_link(new_url) :
+                            broken.append(new_url)
+                        else :
+                            urlqueue.append(new_url)
+        
 
+        # print self.broken_link('http://lyle.smu.edu/~fmoore/misc/urlexample1.htm')
+
+                ####################### ADD TO INDEX HERE #######################
+
+            # end if
+        # end while
+        print 'VISITED'
+        print visited
+        print
+        print 'EXTERNAL'
+        print external
+        print
+        print 'JPEG'
+        print jpeg
+        print
+        print 'BROKEN'
+        print broken
+        print
+
+    # end crawl method
+# end crawler class
 
 
 ###########    Main method    ###########
