@@ -343,46 +343,16 @@ class PorterStemmer:
         self.step5()
         return self.b[self.k0:self.k+1]
 
-    def stemText(self, page_text):
+    def stem_word(self, text):
         """
-        stemText will take a string with multiple words and
-        stem each word, and return the entire text with each
-        word being stemmed
-        @page_text: The entire text of a page
+        This method will stem words from a list.
         """
-        # Separates each word into its own element in a list
-        word_list = page_text.split()
-        for idx, word in enumerate(word_list):
-            # Strips punctuation off either side of the word
-            # and forces it to lower-case.
-            word = word.lower().strip(string.punctuation)
-            # Updates each word in the text to its stemmed equivalent
-            word = self.stem(word.lower(), 0, len(word)-1)
-            # Strips remaining punctuation that the stemmer doesn't check for
-            # e.g. What's -> what' -> what
-            word = word.strip(string.punctuation)
-            word_list[idx] = word
-        return " ".join(word_list)
-
+        for idx, word in enumerate(text):
+            word = self.stem(word, 0, len(word)-1)
+            text[idx] = word
+        return text
 
 if __name__ == '__main__':
     p = PorterStemmer()
-    if len(sys.argv) > 1:
-        for f in sys.argv[1:]:
-            infile = open(f, 'r')
-            while 1:
-                output = ''
-                word = ''
-                line = infile.readline()
-                if line == '':
-                    break
-                for c in line:
-                    if c.isalpha():
-                        word += c.lower()
-                    else:
-                        if word:
-                            output += p.stem(word, 0,len(word)-1)
-                            word = ''
-                        output += c.lower()
-                print output,
-            infile.close()
+    text = ['freeman', 'moore', 'smu', 'spring', '2016', 'spring', '2016', 'freeman', 'l', 'moore', 'phd', 'email', 'fmoorelylesmuedu', 'fall', '2015', 'cse', '53307330', 'looking', 'course', 'calendar', 'blackboard', 'latest', 'information', 'course', 'notes', 'spring', '2015', 'tuesday', '630', '920', 'caruth', '161', 'cse', '53377337', 'syllabus', 'contents', 'web', 'site', 'sole', 'responsibility', 'dr', 'freeman', 'moore', 'necessarily', 'represent', 'opinions', 'policies', 'southern', 'methodist', 'university', 'administrator', 'site', 'dr', 'freeman', 'moore', 'contacted', 'fmoorelylesmuedu']
+    print p.stem_word(text)

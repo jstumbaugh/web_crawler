@@ -1,7 +1,8 @@
-import requests, robotparser, urlparse, re, os, string
+import requests, robotparser, urlparse, re, os, string, sys
 from bs4 import BeautifulSoup
 from HTMLParser import HTMLParser
 from time import localtime, strftime
+from stemmer import PorterStemmer
 
 _ROOT_ = 'http://lyle.smu.edu/~fmoore/'
 
@@ -13,6 +14,7 @@ class MLStripper(HTMLParser):
     def __init__(self):
         self.reset()
         self.fed = []
+
     def handle_data(self, d):
         self.fed.append(d)
     def get_data(self):
@@ -28,6 +30,10 @@ def strip_tags(html):
     return s.get_data()
 
 class Crawler:
+
+    def __init__(self):
+        self.stopwords = []
+        self.p = PorterStemmer()
 
     def clean_url(self, url) :
         """
@@ -112,14 +118,26 @@ class Crawler:
         exclude = set(string.punctuation)
         return ''.join(ch for ch in text if ch not in exclude)
 
+    def load_stop_words(self, file) :
+        """
+        This method stores the list of stopwords from a file to the class
+        variable list self.stopwords.
+        """
+        self.stopwords = [line.rstrip('\n') for line in open(file)]
+
     def prepare_text(self, text) :
         """
-        This method prepares the raw HTML text so that it can be stemmed.
+        This method prepares the raw HTML text for it to be indexed by lowering
+        the letters, removing the HTML tags, removing the punctuation, removing
+        the extra white space, changing the list to ASCII from unicode, removing
+        the stop words, and stemming each word.
         """
-        text = text.lower()
-        text = strip_tags(text)
+        text = strip_tags(text.lower())
         text = self.remove_punctuation(text)
         text = self.remove_extra_whitespace(text)
+        text = [word.encode('UTF8') for word in text.split()]
+        text = [word for word in text if word not in self.stopwords]
+        text = self.p.stem_word(text)
         return text
 
     def write_output(self, visited, external, jpeg, broken) :
@@ -184,6 +202,11 @@ class Crawler:
                 # fetch the page
                 page = self.fetch(url)
 
+                # this is just for testing purposes lol
+                # cleantext = self.prepare_text(page)
+                # print cleantext
+                # break
+
                 # checks to see if url is parsable aka .html, .htm, .txt
                 # if yes, then parse; if no, pass
                 # filename, file_extension = os.path.splitext(url)
@@ -229,6 +252,7 @@ class Crawler:
 ###########    Main method    ###########
 if __name__ == "__main__":
     crawler = Crawler()
+    crawler.load_stop_words('stopwords.txt')
     crawler.crawl()
 
 #########################################
