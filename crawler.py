@@ -4,6 +4,7 @@ from HTMLParser import HTMLParser
 from time import localtime, strftime
 from stemmer import PorterStemmer
 from collections import Counter
+import sys
 
 _ROOT_ = 'http://lyle.smu.edu/~fmoore/'
 
@@ -92,10 +93,8 @@ class Crawler:
         elif re.compile('mailto:').match(url) :
             return True
         else :
-            if requests.get(_ROOT_ + url).status_code == 200 :
-                return False
-            else :
-                return True
+            return False if requests.get(_ROOT_ + url).status_code == 200 else True
+
 
     def jpeg_link(self, url) :
         """
@@ -103,10 +102,7 @@ class Crawler:
 
         This method will check if the link is a JPEG
         """
-        if re.compile('.*.jpg').match(url):
-            return True
-        else :
-            return False
+        return True if re.compile('.*.jpg').match(url) else False
 
     def broken_link(self, url) :
         """
@@ -114,10 +110,7 @@ class Crawler:
 
         This method will check if the link is broken.
         """
-        if requests.get(_ROOT_ + self.clean_url(url)).status_code == 200 :
-            return False
-        else :
-            return True
+        return False if requests.get(_ROOT_ + self.clean_url(url)).status_code == 200 else True
 
     def clean_visited_links(self, visited) :
         """
@@ -125,10 +118,7 @@ class Crawler:
 
         This method will add the root URL to all of the visited links for visual apperance
         """
-        pretty_urls = []
-        for link in visited :
-            pretty_urls.append(_ROOT_ + link)
-        return pretty_urls
+        return [_ROOT_ + link for link in visited]
 
     def remove_extra_whitespace(self, text) :
         """
@@ -204,7 +194,7 @@ class Crawler:
         f.write('Current Time: ')
         f.write(strftime("%Y-%m-%d %H:%M:%S", localtime()))
         f.write('\n\n')
-        
+
         # Visited links
         f.write('Visted Links: (' + str(len(visited)) + ' total)\n')
         for link in visited :
@@ -232,16 +222,17 @@ class Crawler:
         # Term Frequency
         f.write('Top 20 Most Common Words with Document Frequency\n')
         for i in dictionary:
-        	f.write('The term ' + i[0] + ' occurs ' + str(i[1][1]) + ' times in ' + str(i[1][0]) + ' documents.\n')
+            f.write('The term ' + i[0] + ' occurs ' + str(i[1][1]) + ' times in ' + str(i[1][0]) + ' documents.\n')
 
         f.close()
 
-    def crawl(self) :
+    def crawl(self, pages_to_index) :
         """
         Author: Jason and Nicole but mostly Jason except for lines 263 - 270 and part of line 304
 
         This is the main worker method. It will parse the urls, add the words to
-        the index, get the next links, and continue looping through the queue.
+        the index, get the next links, and continue looping through the queue until
+        the number of pages to index is met.
         """
 
         parser = robotparser.RobotFileParser()
@@ -254,7 +245,10 @@ class Crawler:
         # visited, external, jpeg, and broken links
         visited, external, jpeg, broken = [], [], [], []
 
-        while urlqueue :
+        # pages indexd
+        pages_indexed = 0
+
+        while urlqueue:
             # get flast element in urlqueue
             url = urlqueue.pop(-1)
             if self.clean_url(url) in visited:
@@ -287,13 +281,16 @@ class Crawler:
                 # if yes, then parse and index; if no, pass
                 filename, file_extension = os.path.splitext(url)
                 if not (file_extension == ".pdf" or file_extension == ".pptx") :
-                    url = 'http://lyle.smu.edu/~fmoore/' + url
-                    pagetext = requests.get(url)
+                    pagetext = requests.get(_ROOT_ + url)
                     pagetext = pagetext.text
                     cleantext = self.prepare_text(pagetext)
                     doc_words = Counter(cleantext)
                     self.index(url, doc_words)
 
+                # increment the pages indexed
+                pages_indexed += 1
+                if int(pages_indexed) >= int(pages_to_index):
+                    break
             # end if
         # end while
 
@@ -311,6 +308,6 @@ class Crawler:
 if __name__ == "__main__":
     crawler = Crawler()
     crawler.load_stop_words('stopwords.txt')
-    crawler.crawl()
+    crawler.crawl(sys.argv[1])
 
 #########################################

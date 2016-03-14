@@ -1,5 +1,5 @@
 Output of Jason and Nicole's web crawler.
-Current Time: 2016-03-14 12:15:28
+Current Time: 2016-03-14 15:48:04
 
 Visted Links: (15 total)
 http://lyle.smu.edu/~fmoore/
