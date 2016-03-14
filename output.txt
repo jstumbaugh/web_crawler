@@ -1,5 +1,5 @@
 Output of Jason and Nicole's web crawler.
-Current Time: 2016-03-14 15:48:04
+Current Time: 2016-03-14 15:59:17
 
 Visted Links: (15 total)
 http://lyle.smu.edu/~fmoore/
@@ -48,22 +48,22 @@ http://lyle.smu.edu/~fmoore/this_aint_gonna_work.htm
 
 Top 20 Most Common Words with Document Frequency
 The term 1 occurs 15 times in 3 documents.
+The term cse occurs 13 times in 5 documents.
 The term chpt occurs 13 times in 1 documents.
-The term cse occurs 11 times in 4 documents.
-The term j occurs 10 times in 1 documents.
+The term exampl occurs 11 times in 4 documents.
 The term hmwk occurs 10 times in 1 documents.
-The term stem occurs 9 times in 1 documents.
+The term 2016 occurs 10 times in 5 documents.
+The term j occurs 10 times in 1 documents.
 The term assign occurs 9 times in 2 documents.
-The term exampl occurs 9 times in 3 documents.
+The term spring occurs 9 times in 4 documents.
+The term stem occurs 9 times in 1 documents.
 The term 2 occurs 8 times in 3 documents.
 The term project occurs 8 times in 2 documents.
-The term 2016 occurs 7 times in 3 documents.
 The term 3 occurs 7 times in 3 documents.
 The term var occurs 7 times in 2 documents.
-The term spring occurs 6 times in 3 documents.
 The term word occurs 6 times in 3 documents.
+The term web occurs 6 times in 3 documents.
 The term 5 occurs 6 times in 2 documents.
-The term web occurs 5 times in 2 documents.
 The term 0 occurs 5 times in 1 documents.
-The term crawler occurs 5 times in 2 documents.
 The term len occurs 5 times in 1 documents.
+The term mar occurs 5 times in 1 documents.
