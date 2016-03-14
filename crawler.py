@@ -1,8 +1,9 @@
-import requests, robotparser, urlparse, re, os, string, sys
+import requests, robotparser, urlparse, re, os, string, sys, operator
 from bs4 import BeautifulSoup
 from HTMLParser import HTMLParser
 from time import localtime, strftime
 from stemmer import PorterStemmer
+from collections import Counter
 
 _ROOT_ = 'http://lyle.smu.edu/~fmoore/'
 
@@ -34,6 +35,8 @@ class Crawler:
     def __init__(self):
         self.stopwords = []
         self.p = PorterStemmer()
+        self.all_words = {}
+        self.all_words_freq = {}
 
     def clean_url(self, url) :
         """
@@ -140,6 +143,27 @@ class Crawler:
         text = self.p.stem_word(text)
         return text
 
+    def index(self, url, doc_words) :
+        """
+        This method indexes all the words in a document and keeps track of
+        the frequency of a word in overall documents and overall occurrences.
+        """
+        for key in doc_words :
+            if key not in self.all_words:
+                self.all_words[key] = [(url, doc_words[key])]
+                self.all_words_freq[key] = [1, doc_words[key]]
+            else:
+                self.all_words[key].append((url, doc_words[key]))
+                self.all_words_freq[key][0] += 1
+                self.all_words_freq[key][1] += doc_words[key]
+
+    def determine_word_freq(self, dictionary) :
+        """
+        This method sorts the frequency of all the words that appears in every
+        document and prints out the 20 most frequency words.
+        """
+        print sorted(dictionary.items(), key=lambda e: e[1][1], reverse=True)[:20]
+
     def write_output(self, visited, external, jpeg, broken) :
         """
         This method will write the output of the crawler to output.txt
@@ -202,20 +226,6 @@ class Crawler:
                 # fetch the page
                 page = self.fetch(url)
 
-                # this is just for testing purposes lol
-                # cleantext = self.prepare_text(page)
-                # print cleantext
-                # break
-
-                # checks to see if url is parsable aka .html, .htm, .txt
-                # if yes, then parse; if no, pass
-                # filename, file_extension = os.path.splitext(url)
-                # if not (file_extension == ".pdf" or file_extension == ".pptx") :
-                #     pagetext = requests.get(url)
-                #     pagetext = pagetext.text
-                #     cleantext = self.prepare_text(pagetext)
-                #     counter += 1
-
                 # add page to visited links
                 visited.append(self.clean_url(url))
 
@@ -233,14 +243,26 @@ class Crawler:
                             broken.append(new_url)
                         else :
                             urlqueue.append(new_url)
-                ####################### ADD TO INDEX HERE #######################
 
-                #################################################################
+                # checks to see if url is parsable aka .html, .htm, .txt
+                # if yes, then parse and index; if no, pass
+                filename, file_extension = os.path.splitext(url)
+                if not (file_extension == ".pdf" or file_extension == ".pptx") :
+                    url = 'http://lyle.smu.edu/~fmoore/' + url
+                    pagetext = requests.get(url)
+                    pagetext = pagetext.text
+                    cleantext = self.prepare_text(pagetext)
+                    doc_words = Counter(cleantext)
+                    self.index(url, doc_words)
+
             # end if
         # end while
 
         # clean the visited links for visual appearance
         visited = self.clean_visited_links(visited)
+
+        # sort and print out the 20 most frequent words
+        self.determine_word_freq(self.all_words_freq)
 
         # write to output file
         self.write_output(visited, external, jpeg, broken)
