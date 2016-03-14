@@ -281,7 +281,7 @@ class Crawler:
                 # if yes, then parse and index; if no, pass
                 filename, file_extension = os.path.splitext(url)
                 if not (file_extension == ".pdf" or file_extension == ".pptx") :
-                    pagetext = requests.get(_ROOT_ + url)
+                    pagetext = requests.get(_ROOT_ + self.clean_url(url))
                     pagetext = pagetext.text
                     cleantext = self.prepare_text(pagetext)
                     doc_words = Counter(cleantext)
