@@ -2,27 +2,29 @@
 A web crawler and idexer using python.
 
 ## Used Software
-This project has been developed on a mid-2012 Macbook Pro running OS X Yosemite (10.10.5) and 
+This project has been developed on a mid-2012 Macbook Pro running OS X Yosemite (10.10.5).
+
 
 ## Installation
-
-### Using Git
 You can clone this repository to gain access to the code of the project.
 
 ```
 git clone https://github.com/jstumbaugh/web_crawler.git
 ```
 
+## Execution
+To excute the project:
+```
+~/webcrawler/$ python crawler.py $PAGES_TO_CRAWL
+```
+where $PAGES_TO_CRAWL is a number of the pages you wish to have the web crawler crawl.
+
+
 ## Dependencies
 
-### Python
+### Python 2.7
 
 ### BeautifulSoup
 
 ### Requests
 
-## Execution
-To excute the project:
-```
-~/webcrawler/$ python crawler.py
-```

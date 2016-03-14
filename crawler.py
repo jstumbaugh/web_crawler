@@ -308,6 +308,11 @@ class Crawler:
 if __name__ == "__main__":
     crawler = Crawler()
     crawler.load_stop_words('stopwords.txt')
-    crawler.crawl(sys.argv[1])
+    # if an argument is passed in, use it to crawl
+    # else use 15, the total number of pages in the domain
+    if len(sys.argv) == 2 :
+        crawler.crawl(sys.argv[1])
+    else :
+        crawler.crawl(15)
 
 #########################################
