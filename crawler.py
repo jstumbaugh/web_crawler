@@ -9,6 +9,8 @@ _ROOT_ = 'http://lyle.smu.edu/~fmoore/'
 
 class MLStripper(HTMLParser):
     """
+    Author: Nicole
+
     This class removes the HTML tags from raw HTML text.
     http://stackoverflow.com/questions/753052/strip-html-from-strings-in-python
     """
@@ -23,6 +25,8 @@ class MLStripper(HTMLParser):
 
 def strip_tags(html):
     """
+    Author: Nicole
+
     This class removes the HTML tags from raw HTML text.
     http://stackoverflow.com/questions/753052/strip-html-from-strings-in-python
     """
@@ -33,6 +37,12 @@ def strip_tags(html):
 class Crawler:
 
     def __init__(self):
+    	"""
+    	Author: Nicole
+
+    	This method declares the list stopwords, dictionaries all_words and
+    	all_words_freq, as well as the PorterStemmer object.
+    	"""
         self.stopwords = []
         self.p = PorterStemmer()
         self.all_words = {}
@@ -40,6 +50,8 @@ class Crawler:
 
     def clean_url(self, url) :
         """
+        Author: Jason
+
         This method removes the base url
         EX. http://lyle.smu.edu/~fmoore/schedule.htm => schedule.htm
         """
@@ -50,6 +62,8 @@ class Crawler:
 
     def fetch(self, url) :
         """
+        Author: Jason
+
         This method will fetch the contents of the page.
         """
         r = requests.get(urlparse.urljoin(_ROOT_, self.clean_url(url)))
@@ -57,6 +71,8 @@ class Crawler:
 
     def extract_urls(self, text) :
         """
+        Author: Jason
+
         This method will take the contents of a page and extract all of the URLs on it
         """
         urls = []
@@ -67,6 +83,8 @@ class Crawler:
 
     def external_link(self, url) :
         """
+        Author: Jason
+
         This method will check if the URL is an external link outside the root domain
         """
         if re.compile('.*lyle.smu.edu/~fmoore.*').match(url):
@@ -81,6 +99,8 @@ class Crawler:
 
     def jpeg_link(self, url) :
         """
+        Author: Jason
+
         This method will check if the link is a JPEG
         """
         if re.compile('.*.jpg').match(url):
@@ -90,6 +110,8 @@ class Crawler:
 
     def broken_link(self, url) :
         """
+        Author: Jason
+
         This method will check if the link is broken.
         """
         if requests.get(_ROOT_ + self.clean_url(url)).status_code == 200 :
@@ -99,6 +121,8 @@ class Crawler:
 
     def clean_visited_links(self, visited) :
         """
+        Author: Jason
+
         This method will add the root URL to all of the visited links for visual apperance
         """
         pretty_urls = []
@@ -108,6 +132,8 @@ class Crawler:
 
     def remove_extra_whitespace(self, text) :
         """
+        Author: Nicole
+
         This method removes more than one white space between words.
         """
         p = re.compile(r'\s+')
@@ -115,6 +141,8 @@ class Crawler:
 
     def remove_punctuation(self, text) :
         """
+        Author: Nicole
+
         This method uses regex to remove the punctuation in text.
         http://stackoverflow.com/questions/265960/best-way-to-strip-punctuation-from-a-string-in-python
         """
@@ -123,6 +151,8 @@ class Crawler:
 
     def load_stop_words(self, file) :
         """
+        Author: Nicole
+
         This method stores the list of stopwords from a file to the class
         variable list self.stopwords.
         """
@@ -130,6 +160,8 @@ class Crawler:
 
     def prepare_text(self, text) :
         """
+        Author: Nicole
+
         This method prepares the raw HTML text for it to be indexed by lowering
         the letters, removing the HTML tags, removing the punctuation, removing
         the extra white space, changing the list to ASCII from unicode, removing
@@ -145,6 +177,8 @@ class Crawler:
 
     def index(self, url, doc_words) :
         """
+        Author: Nicole
+
         This method indexes all the words in a document and keeps track of
         the frequency of a word in overall documents and overall occurrences.
         """
@@ -157,17 +191,14 @@ class Crawler:
                 self.all_words_freq[key][0] += 1
                 self.all_words_freq[key][1] += doc_words[key]
 
-    def determine_word_freq(self, dictionary) :
+    def write_output(self, visited, external, jpeg, broken, dictionary) :
         """
-        This method sorts the frequency of all the words that appears in every
-        document and prints out the 20 most frequency words.
-        """
-        print sorted(dictionary.items(), key=lambda e: e[1][1], reverse=True)[:20]
+        Author: Jason and Nicole but mostly Jason except for lines 211 - 213
 
-    def write_output(self, visited, external, jpeg, broken) :
+        This method will write the output of the crawler and the 20 most common words to output.txt
         """
-        This method will write the output of the crawler to output.txt
-        """
+        dictionary = sorted(dictionary.items(), key=lambda e: e[1][1], reverse=True)[:20]
+
         f = open('output.txt', 'w')
         f.write('Output of Jason and Nicole\'s web crawler.\n')
         f.write('Current Time: ')
@@ -198,9 +229,17 @@ class Crawler:
             f.write(link + '\n')
         f.write('\n')
 
+        # Term Frequency
+        f.write('Top 20 Most Common Words with Document Frequency\n')
+        for i in dictionary:
+        	f.write('The term ' + i[0] + ' occurs ' + str(i[1][1]) + ' times in ' + str(i[1][0]) + ' documents.\n')
+
+        f.close()
 
     def crawl(self) :
         """
+        Author: Jason and Nicole but mostly Jason except for lines 263 - 270 and part of line 304
+
         This is the main worker method. It will parse the urls, add the words to
         the index, get the next links, and continue looping through the queue.
         """
@@ -261,11 +300,8 @@ class Crawler:
         # clean the visited links for visual appearance
         visited = self.clean_visited_links(visited)
 
-        # sort and print out the 20 most frequent words
-        self.determine_word_freq(self.all_words_freq)
-
         # write to output file
-        self.write_output(visited, external, jpeg, broken)
+        self.write_output(visited, external, jpeg, broken, self.all_words_freq)
 
     # end crawl method
 # end crawler class
