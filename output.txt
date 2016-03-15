@@ -1,0 +1,70 @@
+Output of Jason and Nicole's web crawler.
+Current Time: 2016-03-15 12:56:57
+
+Visted Links: (15 total)
+http://lyle.smu.edu/~fmoore/
+http://lyle.smu.edu/~fmoore/CSE7337_syllabus.pdf
+http://lyle.smu.edu/~fmoore/schedule.htm
+http://lyle.smu.edu/~fmoore/misc/excel-examples.html
+http://lyle.smu.edu/~fmoore/misc/review1.pptx
+http://lyle.smu.edu/~fmoore/misc/urlexample1.htm
+http://lyle.smu.edu/~fmoore/misc/word_morphing_puzzle.html
+http://lyle.smu.edu/~fmoore/misc/levenshtein.html
+http://lyle.smu.edu/~fmoore/misc/projectteams.htm
+http://lyle.smu.edu/~fmoore/misc/jaccard_example.pdf
+http://lyle.smu.edu/~fmoore/misc/webcrawler.htm
+http://lyle.smu.edu/~fmoore/misc/porter_stemmer_example.html
+http://lyle.smu.edu/~fmoore/misc/algorithm-1-7.pdf
+http://lyle.smu.edu/~fmoore/misc/letter_distribution.pdf
+http://lyle.smu.edu/~fmoore/spring2016_intro_survey.html
+
+External Links: (17 total)
+mailto:fmoore@lyle.smu.edu
+https://courses.smu.edu
+http://www.gedpage.com/soundex.html
+http://www.smu.edu/EnrollmentServices/Registrar/Enrollment/FinalExamSchedule/Spring2016
+http://java-source.net/open-source/crawlers
+http://code.google.com/p/crawler4j/
+http://download.oracle.com/javase/tutorial/essential/regex/index.html
+http://htmlparser.sourceforge.net/
+http://download.oracle.com/javase/tutorial/networking/urls/index.html
+http://www.robotstxt.org/robotstxt.html
+http://tartarus.org/~martin/PorterStemmer/
+http://en.wikipedia.org/wiki/Document_classification
+http://en.wikipedia.org/wiki/Stop_words
+http://en.wikipedia.org/wiki/Tf*idf
+http://lucene.apache.org/core/
+http://search.carrot2.org/stable/search
+http://9ol.es/porter_js_demo.html
+
+JPEG Links: (3 total)
+http://lyle.smu.edu/~fmoore/misc/room-facing-to-back.jpg
+http://lyle.smu.edu/~fmoore/misc/room-facing-to-front.jpg
+http://lyle.smu.edu/~fmoore/excel-icon.jpg
+
+Broken Links: (3 total)
+http://lyle.smu.edu/~fmoore/this_aint_gonna_work.htm
+http://lyle.smu.edu/~fmoore/page113.xlsx
+http://lyle.smu.edu/~fmoore/page113-ex2.xlsx
+
+Top 20 Most Common Words with Document Frequency
+The term 1 occurs 15 times in 3 documents.
+The term cse occurs 13 times in 5 documents.
+The term chpt occurs 13 times in 1 documents.
+The term exampl occurs 11 times in 4 documents.
+The term hmwk occurs 10 times in 1 documents.
+The term 2016 occurs 10 times in 5 documents.
+The term j occurs 10 times in 1 documents.
+The term assign occurs 9 times in 2 documents.
+The term spring occurs 9 times in 4 documents.
+The term stem occurs 9 times in 1 documents.
+The term 2 occurs 8 times in 3 documents.
+The term project occurs 8 times in 2 documents.
+The term 3 occurs 7 times in 3 documents.
+The term var occurs 7 times in 2 documents.
+The term word occurs 6 times in 3 documents.
+The term web occurs 6 times in 3 documents.
+The term 5 occurs 6 times in 2 documents.
+The term 0 occurs 5 times in 1 documents.
+The term len occurs 5 times in 1 documents.
+The term mar occurs 5 times in 1 documents.

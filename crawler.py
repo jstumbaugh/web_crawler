@@ -59,6 +59,7 @@ class Crawler:
         url = re.compile(_ROOT_).sub('', url)
         url = re.compile('http://lyle.smu.edu/~fmoore').sub('', url)
         url = re.compile('index.*').sub('', url)
+        url = re.compile('.*.gif').sub('', url)
         return re.compile('\.\./').sub('', url)
 
     def fetch(self, url) :
@@ -80,6 +81,8 @@ class Crawler:
         soup = BeautifulSoup(text, 'html.parser')
         for atag in soup.find_all('a'):
             urls.append(atag.get('href'))
+        for img in soup.find_all('img'):
+            urls.append(img.get('src'))
         return urls
 
     def external_link(self, url) :
@@ -92,6 +95,8 @@ class Crawler:
             return False
         elif re.compile('mailto:').match(url) :
             return True
+        elif re.compile('.*.xlsx').match(url) :
+            return False
         else :
             return False if requests.get(_ROOT_ + url).status_code == 200 else True
 
@@ -112,13 +117,13 @@ class Crawler:
         """
         return False if requests.get(_ROOT_ + self.clean_url(url)).status_code == 200 else True
 
-    def clean_visited_links(self, visited) :
+    def add_root_to_links(self, urls) :
         """
         Author: Jason
 
-        This method will add the root URL to all of the visited links for visual apperance
+        This method will add the root URL to all of the links for visual apperance
         """
-        return [_ROOT_ + link for link in visited]
+        return [_ROOT_ + re.compile('http://lyle.smu.edu/~fmoore/').sub('', link) for link in urls]
 
     def remove_extra_whitespace(self, text) :
         """
@@ -268,11 +273,11 @@ class Crawler:
                     # check if we have already visited it or are going to
                     if new_url not in visited and new_url not in urlqueue and new_url not in jpeg and new_url not in broken and new_url not in external :
                         # check if it is an external link
-                        if self.external_link(new_url) :
-                            external.append(new_url)
-                        elif self.jpeg_link(new_url) :
+                        if self.jpeg_link(new_url) :
                             jpeg.append(new_url)
-                        elif self.broken_link(new_url) :
+                        elif self.external_link(new_url) :
+                            external.append(new_url)
+                        elif self.broken_link(  new_url) :
                             broken.append(new_url)
                         else :
                             urlqueue.append(new_url)
@@ -294,8 +299,10 @@ class Crawler:
             # end if
         # end while
 
-        # clean the visited links for visual appearance
-        visited = self.clean_visited_links(visited)
+        # clean the links for visual appearance
+        visited = self.add_root_to_links(visited)
+        jpeg = self.add_root_to_links(jpeg)
+        broken = self.add_root_to_links(broken)
 
         # write to output file
         self.write_output(visited, external, jpeg, broken, self.all_words_freq)
@@ -309,10 +316,10 @@ if __name__ == "__main__":
     crawler = Crawler()
     crawler.load_stop_words('stopwords.txt')
     # if an argument is passed in, use it to crawl
-    # else use 15, the total number of pages in the domain
+    # else use 100 to get all the pages in the domain
     if len(sys.argv) == 2 :
         crawler.crawl(sys.argv[1])
     else :
-        crawler.crawl(15)
+        crawler.crawl(100)
 
 #########################################
