@@ -17,3 +17,18 @@ Web Crawler
     list of broken links
     number of JPEG files in the test data
     top 20 words with document frequency
+
+Phase 2 Details
+  Dictionary of Words
+  Term frequency/Document frequency for each word
+  remove duplicate documents from collection
+  user inputs queries
+  implement cosine similarity of the query against all documents
+    display top N results in descending numerical order
+
+  Need to
+    grab words from page and index them
+    calculate tf/df for each
+    query handling
+    cosine similarity
+    

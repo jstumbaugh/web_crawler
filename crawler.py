@@ -91,14 +91,26 @@ class Crawler:
 
         This method will check if the URL is an external link outside the root domain
         """
-        if re.compile('.*lyle.smu.edu/~fmoore.*').match(url):
-            return False
-        elif re.compile('mailto:').match(url) :
-            return True
-        elif re.compile('.*.xlsx').match(url) :
-            return False
+        if url :
+            url = re.compile('https*://').sub('', url)
+            if re.compile('.*lyle.smu.edu/~fmoore.*').match(url) :
+                return False
+            elif re.compile('www.*').match(url) :
+                return True
+            elif re.compile('java-source.*').match(url) :
+                return True
+            elif re.compile('.*smu.edu.*').match(url) :
+                return True
+            elif re.compile('.*.aspx').match(url) :
+                return True
+            elif re.compile('mailto:').match(url) :
+                return True
+            elif re.compile('.*.xlsx').match(url) :
+                return False
+            else :
+                return False if requests.get(_ROOT_ + url).status_code == 200 else True
         else :
-            return False if requests.get(_ROOT_ + url).status_code == 200 else True
+            return True
 
 
     def jpeg_link(self, url) :
@@ -231,6 +243,20 @@ class Crawler:
 
         f.close()
 
+    def clean_external_links(self, external) :
+        """
+        Author: Jason
+
+        This method will cremove the non links from the external links
+        """
+        urls = []
+        for link in external :
+            if link == None :
+                return urls
+            else :
+                urls.append(link)
+        return urls
+
     def crawl(self, pages_to_index) :
         """
         Author: Jason and Nicole but mostly Jason except for lines 263 - 270 and part of line 304
@@ -267,16 +293,16 @@ class Crawler:
                 # add page to visited links
                 visited.append(self.clean_url(url))
 
+
                 # get urls from page
                 new_urls = self.extract_urls(page)
                 for new_url in new_urls :
                     # check if we have already visited it or are going to
                     if new_url not in visited and new_url not in urlqueue and new_url not in jpeg and new_url not in broken and new_url not in external :
-                        # check if it is an external link
-                        if self.jpeg_link(new_url) :
-                            jpeg.append(new_url)
-                        elif self.external_link(new_url) :
+                        if self.external_link(new_url) :
                             external.append(new_url)
+                        elif self.jpeg_link(new_url) :
+                            jpeg.append(new_url)
                         elif self.broken_link(  new_url) :
                             broken.append(new_url)
                         else :
@@ -303,6 +329,7 @@ class Crawler:
         visited = self.add_root_to_links(visited)
         jpeg = self.add_root_to_links(jpeg)
         broken = self.add_root_to_links(broken)
+        external = self.clean_external_links(external)
 
         # write to output file
         self.write_output(visited, external, jpeg, broken, self.all_words_freq)
@@ -320,6 +347,6 @@ if __name__ == "__main__":
     if len(sys.argv) == 2 :
         crawler.crawl(sys.argv[1])
     else :
-        crawler.crawl(100)
+        crawler.crawl(30)
 
 #########################################

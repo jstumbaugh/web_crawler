@@ -1,10 +1,11 @@
 Output of Jason and Nicole's web crawler.
-Current Time: 2016-03-15 12:56:57
+Current Time: 2016-04-19 19:44:24
 
-Visted Links: (15 total)
+Visted Links: (23 total)
 http://lyle.smu.edu/~fmoore/
 http://lyle.smu.edu/~fmoore/CSE7337_syllabus.pdf
 http://lyle.smu.edu/~fmoore/schedule.htm
+http://lyle.smu.edu/~fmoore/misc/k-means.htm
 http://lyle.smu.edu/~fmoore/misc/excel-examples.html
 http://lyle.smu.edu/~fmoore/misc/review1.pptx
 http://lyle.smu.edu/~fmoore/misc/urlexample1.htm
@@ -17,12 +18,23 @@ http://lyle.smu.edu/~fmoore/misc/porter_stemmer_example.html
 http://lyle.smu.edu/~fmoore/misc/algorithm-1-7.pdf
 http://lyle.smu.edu/~fmoore/misc/letter_distribution.pdf
 http://lyle.smu.edu/~fmoore/spring2016_intro_survey.html
+http://lyle.smu.edu/~fmoore/misc/mockingbird3.html
+http://lyle.smu.edu/~fmoore/misc/mockingbird2.html
+http://lyle.smu.edu/~fmoore/misc/mockingbird1.html
+http://lyle.smu.edu/~fmoore/misc/count_letters_duplicate.txt
+http://lyle.smu.edu/~fmoore//misc/count_letters.txt
+http://lyle.smu.edu/~fmoore//
+http://lyle.smu.edu/~fmoore/#
 
-External Links: (17 total)
+External Links: (190 total)
 mailto:fmoore@lyle.smu.edu
 https://courses.smu.edu
+/index_duplicate.htm
 http://www.gedpage.com/soundex.html
+http://www.articles-about-spam.com/outlook-software-junk.shtml
+http://www.wessa.net/rwasp_hierarchicalclustering.wasp
 http://www.smu.edu/EnrollmentServices/Registrar/Enrollment/FinalExamSchedule/Spring2016
+excel-icon.jpg
 http://java-source.net/open-source/crawlers
 http://code.google.com/p/crawler4j/
 http://download.oracle.com/javase/tutorial/essential/regex/index.html
@@ -36,11 +48,180 @@ http://en.wikipedia.org/wiki/Tf*idf
 http://lucene.apache.org/core/
 http://search.carrot2.org/stable/search
 http://9ol.es/porter_js_demo.html
+http://www.smu.edu/lyle.aspx
+http://meadows.smu.edu/
+http://cox.smu.edu/
+http://smu.edu/education/
+http://engr.smu.edu/
+http://smu.edu/dedman/
+http://law.smu.edu/
+http://smu.edu/perkins/
+/Academics/Centers-Institutes.aspx
+http://smu.edu/libraries/
+http://smu.edu/legacy/
+http://smu.edu/provost
+http://smu.edu/graduate/
+http://smu.edu/summer/
+http://smu.edu/taos/
+http://access.smu.edu/
+http://courses.smu.edu/
+http://webmail.smu.edu/
+/AboutSMU/Administration.aspx
+http://smu.edu/admission
+http://smumustangs.cstv.com/
+http://calendar.smu.edu/
+http://smu.edu/search/
+http://smu.edu/hr/recruit
+http://smu.edu/Financial_Aid/
+http://smu.edu/giving/
+http://smu.edu/its/
+http://smu.edu/maps
+http://smu.edu/meadows/museum/
+http://smu.edu/registrar/
+http://smu.edu/bursar/
+http://smu.edu/studentaffairs/
+http://smu.edu/siteindex/
+http://www.smu.edu/Lyle/Departments.aspx
+http://www.smu.edu/Lyle/Departments/CSE.aspx
+http://www.smu.edu/Lyle/Departments/CSE/Anniversaries.aspx
+http://www.smu.edu/Lyle/Departments/CSE/Programs.aspx
+http://www.smu.edu/Lyle/Departments/CSE/FacultyandStaff.aspx
+http://www.smu.edu/Lyle/Departments/CSE/Research.aspx
+http://www.smu.edu/Lyle/Departments/CSE/AdvisoryBoard.aspx
+http://www.smu.edu/Lyle/Departments/CSE/LectureSeries.aspx
+http://www.smu.edu/Lyle/Departments/CSE/StudentGroups.aspx
+http://www.smu.edu/Lyle/Departments/CSE/Newsletters.aspx
+http://www.smu.edu/Lyle/Departments/CSE/News.aspx
+http://www.smu.edu/Lyle/Departments/CSE/MissionandObjectives.aspx
+http://www.smu.edu/Lyle/Departments/CSE/Contact.aspx
+http://www.smu.edu/Lyle/AboutUs/Accreditation.aspx
+http://www.smu.edu/Lyle/Departments/EE.aspx
+http://www.smu.edu/Lyle/Departments/EE/Courses.aspx
+http://www.smu.edu/Lyle/Departments/EE/Programs.aspx
+http://www.smu.edu/Lyle/Departments/EE/Research.aspx
+http://www.smu.edu/Lyle/Departments/EE/FacultyandStaff.aspx
+http://www.smu.edu/Lyle/Departments/EE/AdvisoryBoard.aspx
+http://www.smu.edu/Lyle/Departments/EE/MissionandObjectives.aspx
+http://www.smu.edu/Lyle/Departments/EMIS.aspx
+http://www.smu.edu/Lyle/Departments/EMIS/Programs.aspx
+http://www.smu.edu/Lyle/Departments/EMIS/Research.aspx
+http://www.smu.edu/Lyle/Departments/EMIS/FacultyandStaff.aspx
+http://www.smu.edu/Lyle/Departments/EMIS/EMISCourses.aspx
+http://www.smu.edu/Lyle/Departments/EMIS/Forms.aspx
+http://lyle.smu.edu/emis/news/
+http://www.smu.edu/Lyle/Departments/EMIS/FacultyPositions.aspx
+http://www.smu.edu/Lyle/Departments/ENCE.aspx
+http://www.smu.edu/Lyle/Departments/ENCE/Careers.aspx
+http://www.smu.edu/Lyle/Departments/ENCE/Research.aspx
+http://www.smu.edu/Lyle/Departments/ENCE/Apply.aspx
+http://www.smu.edu/Lyle/Departments/ENCE/Events.aspx
+http://www.smu.edu/Lyle/Departments/ENCE/FacultyandStaff.aspx
+http://www.smu.edu/Lyle/Departments/ENCE/Programs.aspx
+http://www.smu.edu/Lyle/Departments/ENCE/Student.aspx
+http://www.smu.edu/Lyle/Departments/ENCE/Courses.aspx
+http://www.smu.edu/Lyle/Departments/ENCE/AdvisoryBoard.aspx
+http://www.smu.edu/Lyle/Departments/ENCE/MissionandObjectives.aspx
+http://www.smu.edu/Lyle/Departments/ENCE/Contact.aspx
+http://www.smu.edu/Lyle/Departments/ME.aspx
+http://www.smu.edu/Lyle/Departments/ME/Research.aspx
+http://www.smu.edu/Lyle/Departments/ME/Courses.aspx
+http://www.smu.edu/Lyle/Departments/ME/Programs.aspx
+http://www.smu.edu/Lyle/Departments/ME/FacultyandStaff.aspx
+http://www.smu.edu/Lyle/Departments/ME/Events.aspx
+http://www.smu.edu/Lyle/Departments/ME/GAANN.aspx
+http://www.smu.edu/Lyle/Departments/ME/Opportunities.aspx
+http://www.smu.edu/Lyle/Departments/ME/MissionandObjectives.aspx
+http://www.smu.edu/Lyle/Departments/ME/Contact.aspx
+http://www.smu.edu/Lyle/Graduate.aspx
+http://www.smu.edu/Lyle/Graduate/CurrentStudents.aspx
+http://www.smu.edu/Lyle/Graduate/CurrentStudents/GradTimeline.aspx
+http://www.smu.edu/Lyle/Graduate/CurrentStudents/GradThesisInfo.aspx
+http://www.smu.edu/Lyle/Graduate/CurrentStudents/FastSecondMasters.aspx
+http://www.smu.edu/Lyle/Graduate/CurrentStudents/distance_download.aspx
+http://www.smu.edu/Lyle/Graduate/CurrentStudents/DegreePlans.aspx
+http://www.smu.edu/Lyle/Graduate/CurrentStudents/Forms.aspx
+http://www.smu.edu/Lyle/Graduate/CurrentStudents/Policies.aspx
+http://www.smu.edu/Lyle/Graduate/ProspectiveStudents.aspx
+http://www.smu.edu/Lyle/Graduate/ProspectiveStudents/DistanceEducation.aspx
+http://www.smu.edu/Lyle/Graduate/ProspectiveStudents/OnCampus.aspx
+http://www.smu.edu/Lyle/Graduate/ProspectiveStudents/EngineeringLeaders.aspx
+http://www.smu.edu/Lyle/Graduate/ProspectiveStudents/CertificatePrograms.aspx
+https://lyle.smu.edu/graduate/request.html
+https://www.applyweb.com/apply/smueng/index.html
+http://www.smu.edu/Lyle/Graduate/InternationalPrograms.aspx
+http://www.smu.edu/Lyle/Graduate/InternationalPrograms/VisitingStudentCertificate.aspx
+http://www.smu.edu/Lyle/Graduate/Contacts.aspx
+http://www.smu.edu/Lyle/Undergrad.aspx
+http://www.smu.edu/Lyle/Undergrad/ProspectiveStudents.aspx
+http://www.smu.edu/Lyle/Undergrad/ProspectiveStudents/Academics.aspx
+http://www.smu.edu/Lyle/Undergrad/ProspectiveStudents/Student_Discounts.aspx
+https://lyle.smu.edu/card/index.html
+http://www.smu.edu/Lyle/Undergrad/ProspectiveStudents/ScheduleVisit.aspx
+http://www.smu.edu/Lyle/Undergrad/ProspectiveStudents/Apply.aspx
+http://www.smu.edu/Lyle/Undergrad/ProspectiveStudents/GroupTours.aspx
+http://www.smu.edu/Lyle/Undergrad/ProspectiveStudents/Undergrad_Contacts.aspx
+http://www.smu.edu/Lyle/Undergrad/CurrentStudents.aspx
+http://www.smu.edu/Lyle/Undergrad/CurrentStudents/Advising.aspx
+http://www.smu.edu/Lyle/Undergrad/CurrentStudents/Undergrad_Forms.aspx
+http://www.smu.edu/Lyle/Undergrad/Parents.aspx
+http://www.smu.edu/Lyle/Undergrad/Parents/Financial_Aid.aspx
+http://www.smu.edu/Lyle/Undergrad/Parents/Scholarship_List.aspx
+http://www.smu.edu/Lyle/Undergrad/Parents/Student_Profiles.aspx
+http://www.smu.edu/Lyle/Undergrad/CenterforEngineeringLeadership.aspx
+http://www.smu.edu/Lyle/Undergrad/CenterforEngineeringLeadership/Co-Op_Internships.aspx
+http://www.smu.edu/Lyle/Undergrad/CenterforEngineeringLeadership/Student_Organizations.aspx
+http://www.smu.edu/Lyle/Undergrad/CenterforEngineeringLeadership/Experience_Exam.aspx
+http://www.smu.edu/Lyle/K-12.aspx
+http://www.smu.edu/Lyle/K-12/CaruthInstitute.aspx
+http://www.infinity-project.org/
+http://smu.edu/caruth/institute/genderparity.asp
+http://smu.edu/caruth/institute/visioneering.asp
+http://www.smu.edu/Lyle/K-12/CaruthInstitute/precollege_camp_girls.aspx
+http://www.smu.edu/Lyle/AboutUs.aspx
+http://www.smu.edu/Lyle/AboutUs/DeanMessage.aspx
+http://www.smu.edu/Lyle/AboutUs/DeansOffice.aspx
+http://www.smu.edu/Lyle/AboutUs/BobbyBLyle.aspx
+http://www.smu.edu/Lyle/AboutUs/MissionStatement.aspx
+http://www.smu.edu/Lyle/AboutUs/Facilities.aspx
+http://www.smu.edu/Lyle/AboutUs/Facilities/CaruthHall.aspx
+http://www.smu.edu/Lyle/AboutUs/Facilities/JunkinsHall.aspx
+http://www.smu.edu/Lyle/AboutUs/Facilities/EmbreyBuilding.aspx
+http://www.smu.edu/Lyle/AboutUs/Newsroom.aspx
+http://smu.edu/logos/engineering/default.asp
+http://www.smu.edu/Lyle/AboutUs/StaffDirectory.aspx
+http://www.smu.edu/Lyle/AboutUs/ContactsandDirectories.aspx
+http://www.smu.edu/Lyle/AboutUs/ContactsandDirectories/FacultyCSE.aspx
+http://www.smu.edu/Lyle/AboutUs/ContactsandDirectories/FacultyEE.aspx
+http://www.smu.edu/Lyle/AboutUs/ContactsandDirectories/FacultyEMIS.aspx
+http://www.smu.edu/Lyle/AboutUs/ContactsandDirectories/FacultyENCE.aspx
+http://www.smu.edu/Lyle/AboutUs/ContactsandDirectories/FacultyME.aspx
+http://www.smu.edu/Lyle/AboutUs/ExecutiveBoard.aspx
+http://www.smu.edu/Lyle/AboutUs/CorporatePartners.aspx
+http://www.smu.edu/Lyle/AboutUs/Directions.aspx
+http://www.smu.edu/Lyle/AboutUs/FactsandFigures.aspx
+http://www.smu.edu/Lyle/AboutUs/JobOpportunities.aspx
+http://www.smu.edu/Lyle/Alumni.aspx
+http://www.smu.edu/Lyle/Alumni/Giving.aspx
+http://www.smu.edu/caruth/caruthhall
+http://www.smu.edu/caruth/institute
+http://www.smu.edu/giving/form_engr_giving.asp
+mailto:webteam@lyle.smu.edu?subject=404 Error: Need more information
+/Lyle.aspx
+/Lyle/AboutUs/StaffDirectory.aspx
+/Lyle/AboutUs/JobOpportunities.aspx
+mailto:webteam@engr.smu.edu?subject=Lyle Webteam Request
+http://smu.edu/legal
+/AboutSMU/ContactSMU.aspx
+http://www.smu.edu/Lyle/~/media/Site/Lyle/Images/template/structure/LogoSMULyleEngineeringGray.ashx
+~/media/Images/Structure/dropdown-triangle.ashx
+~/media/Images/Structure/clear.ashx
+http://wcmstage.smu.edu/Lyle/TED/~/media/Site/Lyle/Images/template/structure/smu-stays-classy-red-whiteBG.ashx
+http://www.smu.edu/lyle
 
 JPEG Links: (3 total)
 http://lyle.smu.edu/~fmoore/misc/room-facing-to-back.jpg
 http://lyle.smu.edu/~fmoore/misc/room-facing-to-front.jpg
-http://lyle.smu.edu/~fmoore/excel-icon.jpg
+http://lyle.smu.edu/~fmoore/misc/roadmap-03-22-2016.jpg
 
 Broken Links: (3 total)
 http://lyle.smu.edu/~fmoore/this_aint_gonna_work.htm
@@ -48,23 +229,23 @@ http://lyle.smu.edu/~fmoore/page113.xlsx
 http://lyle.smu.edu/~fmoore/page113-ex2.xlsx
 
 Top 20 Most Common Words with Document Frequency
-The term 1 occurs 15 times in 3 documents.
-The term cse occurs 13 times in 5 documents.
-The term chpt occurs 13 times in 1 documents.
-The term exampl occurs 11 times in 4 documents.
+The term 1 occurs 31 times in 5 documents.
+The term cse occurs 17 times in 7 documents.
+The term 0 occurs 15 times in 4 documents.
+The term spring occurs 15 times in 6 documents.
+The term 2016 occurs 14 times in 7 documents.
+The term 2 occurs 14 times in 5 documents.
+The term exampl occurs 14 times in 5 documents.
+The term chpt occurs 14 times in 1 documents.
+The term freeman occurs 12 times in 3 documents.
+The term moor occurs 12 times in 3 documents.
+The term 3 occurs 11 times in 5 documents.
 The term hmwk occurs 10 times in 1 documents.
-The term 2016 occurs 10 times in 5 documents.
+The term assign occurs 10 times in 3 documents.
 The term j occurs 10 times in 1 documents.
-The term assign occurs 9 times in 2 documents.
-The term spring occurs 9 times in 4 documents.
+The term scout occurs 9 times in 3 documents.
 The term stem occurs 9 times in 1 documents.
-The term 2 occurs 8 times in 3 documents.
+The term fin occurs 8 times in 2 documents.
 The term project occurs 8 times in 2 documents.
-The term 3 occurs 7 times in 3 documents.
-The term var occurs 7 times in 2 documents.
-The term word occurs 6 times in 3 documents.
-The term web occurs 6 times in 3 documents.
-The term 5 occurs 6 times in 2 documents.
-The term 0 occurs 5 times in 1 documents.
-The term len occurs 5 times in 1 documents.
-The term mar occurs 5 times in 1 documents.
+The term site occurs 8 times in 4 documents.
+The term web occurs 8 times in 5 documents.
