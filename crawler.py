@@ -107,11 +107,14 @@ class Crawler:
                 return True
             elif re.compile('.*.xlsx').match(url) :
                 return False
+            elif requests.get(_ROOT_ + url).status_code == 200 :
+                return False
+            elif self.jpeg_link(url) :
+                return False
             else :
-                return False if requests.get(_ROOT_ + url).status_code == 200 else True
+                return True
         else :
             return True
-
 
     def jpeg_link(self, url) :
         """
@@ -129,13 +132,24 @@ class Crawler:
         """
         return False if requests.get(_ROOT_ + self.clean_url(url)).status_code == 200 else True
 
+    def excel_link(self,url) :
+        """
+        Author: Jason
+
+        This method will check if the link is an excel file.
+        """
+        return True if re.compile('.*.xlsx').match(url) else False
+
     def add_root_to_links(self, urls) :
         """
         Author: Jason
 
         This method will add the root URL to all of the links for visual apperance
         """
-        return [_ROOT_ + re.compile('http://lyle.smu.edu/~fmoore/').sub('', link) for link in urls]
+        new_urls = [_ROOT_ + re.compile('http://lyle.smu.edu/~fmoore/').sub('', link) for link in urls]
+        # del new_urls[-1] # http://lyle.smu.edu/~fmoore//
+        # del new_urls[-1] # http://lyle.smu.edu/~fmoore/#
+        return new_urls
 
     def remove_extra_whitespace(self, text) :
         """
@@ -259,7 +273,7 @@ class Crawler:
 
     def crawl(self, pages_to_index) :
         """
-        Author: Jason and Nicole but mostly Jason except for lines 263 - 270 and part of line 304
+        Author: Jason and Nicole 
 
         This is the main worker method. It will parse the urls, add the words to
         the index, get the next links, and continue looping through the queue until
@@ -287,15 +301,19 @@ class Crawler:
 
             # check if we can fetch the page first
             if parser.can_fetch('*', urlparse.urljoin('/', url)) :
+
+                # remove the / at the beginning of the string
+                url = re.compile('^/').sub('',url)
+
                 # fetch the page
                 page = self.fetch(url)
 
                 # add page to visited links
                 visited.append(self.clean_url(url))
 
-
                 # get urls from page
                 new_urls = self.extract_urls(page)
+
                 for new_url in new_urls :
                     # check if we have already visited it or are going to
                     if new_url not in visited and new_url not in urlqueue and new_url not in jpeg and new_url not in broken and new_url not in external :
@@ -303,7 +321,9 @@ class Crawler:
                             external.append(new_url)
                         elif self.jpeg_link(new_url) :
                             jpeg.append(new_url)
-                        elif self.broken_link(  new_url) :
+                        elif self.excel_link(new_url) :
+                            visited.append(new_url)
+                        elif self.broken_link(new_url) :
                             broken.append(new_url)
                         else :
                             urlqueue.append(new_url)
@@ -326,7 +346,7 @@ class Crawler:
         # end while
 
         # clean the links for visual appearance
-        visited = self.add_root_to_links(visited)
+        visited = set(self.add_root_to_links(visited))
         jpeg = self.add_root_to_links(jpeg)
         broken = self.add_root_to_links(broken)
         external = self.clean_external_links(external)
