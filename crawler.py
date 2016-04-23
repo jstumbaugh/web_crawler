@@ -48,6 +48,7 @@ class Crawler:
         self.p = PorterStemmer()
         self.all_words = {}
         self.all_words_freq = {}
+        self.tfidf = {}
 
     def clean_url(self, url) :
         """
@@ -212,6 +213,11 @@ class Crawler:
                 self.all_words_freq[key][0] += 1
                 self.all_words_freq[key][1] += doc_words[key]
 
+    # def calTFIDF(self, word, numDocs, dictionary) :
+    #     ' occurs ' + str(i[1][1]) + ' times in ' + str(i[1][0]) + ' documents.
+
+        
+
     def write_output(self, visited, external, jpeg, broken, dictionary) :
         """
         Author: Jason and Nicole but mostly Jason except for lines 211 - 213
@@ -350,6 +356,12 @@ class Crawler:
         jpeg = self.add_root_to_links(jpeg)
         broken = self.add_root_to_links(broken)
         external = self.clean_external_links(external)
+
+        for i in self.all_words['time'] :
+        	print '\n', 'i[1]: ', i[1]
+        	print 'numDocs: ', len(visited)
+        	print 'numOccurrences: ', self.all_words_freq['time'][1]
+        	print i[1] * math.log(len(visited)/self.all_words_freq['time'][1])
 
         # write to output file
         self.write_output(visited, external, jpeg, broken, self.all_words_freq)
