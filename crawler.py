@@ -4,7 +4,7 @@ from HTMLParser import HTMLParser
 from time import localtime, strftime
 from stemmer import PorterStemmer
 from collections import Counter
-import sys
+from math import log10
 
 _ROOT_ = 'http://lyle.smu.edu/~fmoore/'
 
@@ -213,10 +213,16 @@ class Crawler:
                 self.all_words_freq[key][0] += 1
                 self.all_words_freq[key][1] += doc_words[key]
 
-    # def calTFIDF(self, word, numDocs, dictionary) :
-    #     ' occurs ' + str(i[1][1]) + ' times in ' + str(i[1][0]) + ' documents.
+    def calTFIDF(self, word, visited) :
+        """
+        Author: Nicole
 
-        
+        This method will calculate the TF-IDF for a given word.
+
+        number of times word appears in a document * log(total documents/ how many documents the word appears in)
+        """
+        for i in self.all_words[word] :
+            return i[1] * log10(len(visited)/self.all_words_freq[word][1])
 
     def write_output(self, visited, external, jpeg, broken, dictionary) :
         """
@@ -356,12 +362,6 @@ class Crawler:
         jpeg = self.add_root_to_links(jpeg)
         broken = self.add_root_to_links(broken)
         external = self.clean_external_links(external)
-
-        for i in self.all_words['time'] :
-        	print '\n', 'i[1]: ', i[1]
-        	print 'numDocs: ', len(visited)
-        	print 'numOccurrences: ', self.all_words_freq['time'][1]
-        	print i[1] * math.log(len(visited)/self.all_words_freq['time'][1])
 
         # write to output file
         self.write_output(visited, external, jpeg, broken, self.all_words_freq)
