@@ -219,10 +219,10 @@ class Crawler:
 
         This method will calculate the TF-IDF for a given word.
 
-        number of times word appears in a document * log(total documents/ how many documents the word appears in)
+        1 + log(number of times word appears in a document) * log(total documents/ how many documents the word appears in)
         """
         for i in self.all_words[word] :
-            return i[1] * log10(len(visited)/self.all_words_freq[word][1])
+            return (1+ log10(i[1]) * log10(len(visited)/self.all_words_freq[word][0])
 
     def write_output(self, visited, external, jpeg, broken, dictionary) :
         """
