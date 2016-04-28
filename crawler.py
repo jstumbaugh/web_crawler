@@ -284,9 +284,40 @@ class Crawler:
                 urls.append(link)
         return urls
 
+    def query_engine(self):
+        """
+        Author: Jason
+
+        This method will be the main query handler.
+        self.all_words format: [('spring'), [('url', 3), ('other_page', 4)] ]
+                                   word         tuples(url, frequency)
+        """
+        print "#################################################################"
+        print "################### Jason and Nicoles' Web Crawler ##############"
+        print "#################################################################"
+        print
+        print "Please enter a query to search the lyle.smu.edu/~fmoore domain."
+        print "Type 'quit' to exit the search engine"
+        user_input = ""
+        while True :
+            user_input = raw_input("> ")
+            if user_input == "quit" or user_input == "Quit" or user_input == "QUIT":
+                break
+            words = self.p.stem_word(re.sub("[^\w]", " ",  user_input).split())
+            common_docs = []
+            for word in words :
+                info = self.all_words.get(word)
+                if info :
+                    for tup in info :
+                        if tup[0] not in common_docs:
+                            common_docs.append(tup[0])
+            print common_docs
+        return
+
+
     def crawl(self, pages_to_index) :
         """
-        Author: Jason and Nicole 
+        Author: Jason and Nicole
 
         This is the main worker method. It will parse the urls, add the words to
         the index, get the next links, and continue looping through the queue until
@@ -366,6 +397,9 @@ class Crawler:
 
         # write to output file
         self.write_output(visited, external, jpeg, broken, self.all_words_freq)
+
+        # query engine prepare_text
+        self.query_engine()
 
     # end crawl method
 # end crawler class
