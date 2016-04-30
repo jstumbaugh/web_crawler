@@ -293,7 +293,7 @@ class Crawler:
                                    word         tuples(url, frequency)
         """
         print "#################################################################"
-        print "################### Jason and Nicoles' Web Crawler ##############"
+        print "################ Jason and Nicoles' Web Crawler #################"
         print "#################################################################"
         print
         print "Please enter a query to search the lyle.smu.edu/~fmoore domain."
