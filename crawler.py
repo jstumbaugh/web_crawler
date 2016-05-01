@@ -283,7 +283,7 @@ class Crawler:
                 urls.append(link)
         return urls
 
-    def query_engine(self):
+    def query_engine(self, N):
         """
         Author: Jason
 
@@ -303,14 +303,27 @@ class Crawler:
             if user_input == "quit" or user_input == "Quit" or user_input == "QUIT":
                 break
             words = self.p.stem_word(re.sub("[^\w]", " ",  user_input).split())
-            common_docs = []
+            words = [word.lower() for word in words]
+            common_docs = {}
             for word in words :
                 info = self.all_words.get(word)
                 if info :
                     for tup in info :
                         if tup[0] not in common_docs:
-                            common_docs.append(tup[0])
-            print common_docs
+                            common_docs[tup[0]] = tup[1]
+                        else :
+                            common_docs[tup[0]] += tup[1]
+            sorted_common_docs = sorted(common_docs.items(), key=operator.itemgetter(1), reverse=True)
+            if len(sorted_common_docs) == 0:
+                print '%s not found in domain\n' % user_input
+                continue
+            print '  # Words on Page     Page'
+            i = 0
+            for tup in sorted_common_docs :
+                i += 1
+                if i > N: break
+                print ('    %i                 %s' % (tup[1], self.add_root_to_links([tup[0]])[0]))
+            print
         return
 
 
@@ -397,8 +410,8 @@ class Crawler:
         # write to output file
         self.write_output(visited, external, jpeg, broken, self.all_words_freq)
 
-        # query engine prepare_text
-        self.query_engine()
+        # query engine with N=5
+        self.query_engine(5)
 
     # end crawl method
 # end crawler class
