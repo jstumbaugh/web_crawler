@@ -1,5 +1,5 @@
 Output of Jason and Nicole's web crawler.
-Current Time: 2016-04-30 12:59:11
+Current Time: 2016-04-30 23:08:10
 
 Visted Links: (25 total)
 http://lyle.smu.edu/~fmoore/misc/mockingbird2.html
@@ -59,9 +59,11 @@ Broken Links: (1 total)
 http://lyle.smu.edu/~fmoore/this_aint_gonna_work.htm
 
 Top 20 Most Common Words with Document Frequency
+The term and occurs 58 times in 11 documents.
 The term 1 occurs 31 times in 5 documents.
 The term scout occurs 21 times in 5 documents.
 The term jem occurs 19 times in 5 documents.
+The term her occurs 19 times in 5 documents.
 The term atticu occurs 16 times in 4 documents.
 The term 0 occurs 15 times in 4 documents.
 The term 2 occurs 15 times in 5 documents.
@@ -74,8 +76,6 @@ The term mockingbird occurs 11 times in 5 documents.
 The term hmwk occurs 10 times in 1 documents.
 The term 2016 occurs 10 times in 5 documents.
 The term assign occurs 10 times in 3 documents.
+The term part occurs 10 times in 5 documents.
 The term j occurs 10 times in 1 documents.
 The term project occurs 9 times in 2 documents.
-The term boo occurs 9 times in 3 documents.
-The term spring occurs 9 times in 4 documents.
-The term stem occurs 9 times in 1 documents.
