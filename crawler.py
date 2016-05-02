@@ -52,9 +52,6 @@ class Crawler:
         self.all_words_freq = {}
         self.tfidf = {}
         self.vocabulary = []
-        # doc_term_matrix = [ [0,3,1,0...], [0,0,2,1...],... ]
-        #                       word1        word2
-        #                      0 on doc0, 3 on doc1, 1 on doc2...
         self.doc_term_matrix = [[0] * 23 for n in range(809)]
         self.docs = {}
         self.visited = []
@@ -157,8 +154,6 @@ class Crawler:
         This method will add the root URL to all of the links for visual apperance
         """
         new_urls = [_ROOT_ + re.compile('http://lyle.smu.edu/~fmoore/').sub('', link) for link in urls]
-        # del new_urls[-1] # http://lyle.smu.edu/~fmoore//
-        # del new_urls[-1] # http://lyle.smu.edu/~fmoore/#
         return new_urls
 
     def remove_extra_whitespace(self, text) :
@@ -207,6 +202,11 @@ class Crawler:
         return text
 
     def add_root_if_not_there(self, url) :
+        """
+        Author: Jason
+
+        This method will add the root url to a single link if it isnt there
+        """
         url = re.compile('http://lyle.smu.edu/~fmoore/').sub('', url)
         return _ROOT_ + url
 
@@ -308,6 +308,8 @@ class Crawler:
 
     def appears(self, i) :
         """
+        Author: Jason
+
         This method will return 1 if the frequency (i) is greater than 1. It is
         used for writing the term/document frequency matrix
         """
@@ -386,6 +388,8 @@ class Crawler:
 
     def normalize_vector(self, vector) :
         """
+        Author: Jason
+
         This method will nomalize the vector to prep for calculate_cosine_similarity
         """
         if numpy.linalg.norm(vector) == 0.0 :
@@ -395,12 +399,13 @@ class Crawler:
 
     def calculate_cosine_similarity(self, doc, query) :
         """
+        Author: Jason
 
+        This method will calculate the cosine similarity betwee two vectors of equal size
         """
         if len(doc) != len(query) :
             return 0.0
         return numpy.dot(doc,query)
-
 
     def crawl(self, pages_to_index) :
         """

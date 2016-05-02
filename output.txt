@@ -1,5 +1,5 @@
 Output of Jason and Nicole's web crawler.
-Current Time: 2016-05-02 11:49:21
+Current Time: 2016-05-02 13:10:46
 
 Visited Links: (25 total)
 http://lyle.smu.edu/~fmoore/misc/mockingbird2.html
