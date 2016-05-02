@@ -6,6 +6,7 @@ from stemmer import PorterStemmer
 from collections import Counter
 from math import log10
 from scipy import spatial
+from sklearn.preprocessing import normalize
 
 _ROOT_ = 'http://lyle.smu.edu/~fmoore/'
 
@@ -54,8 +55,9 @@ class Crawler:
         # doc_term_matrix = [ [0,3,1,0...], [0,0,2,1...],... ]
         #                       word1        word2
         #                      0 on doc0, 3 on doc1, 1 on doc2...
-        self.doc_term_matrix = [[0] * 23 for n in range(805)]
+        self.doc_term_matrix = [[0] * 23 for n in range(809)]
         self.docs = {}
+        self.visited = []
 
     def clean_url(self, url) :
         """
@@ -221,6 +223,7 @@ class Crawler:
                 self.all_words_freq[key] = [1, doc_words[key]]
                 self.vocabulary.append(key)
                 # [word][docID] = word_freq
+                # print '['+str(self.vocabulary.index(key))+']['+str(self.docs[self.add_root_if_not_there(url)])+'] = ' + str(self.all_words[key][0][1])
                 self.doc_term_matrix[self.vocabulary.index(key)][self.docs[self.add_root_if_not_there(url)]] = self.all_words[key][0][1]
             else:
                 self.all_words[key].append((url, doc_words[key]))
@@ -238,8 +241,11 @@ class Crawler:
 
         1 + log(number of times word appears in a document) * log(total documents/ how many documents the word appears in)
         """
-        for i in self.all_words[word] :
-            return (1 + log10(i[1])) * log10(len(visited)/self.all_words_freq[word][0])
+        if word in self.all_words:
+            for i in self.all_words[word] :
+                return (1 + log10(i[1])) * log10(len(visited)/self.all_words_freq[word][0])
+        else :
+            return 0
 
     def write_output(self, visited, external, jpeg, broken, dictionary) :
         """
@@ -337,41 +343,63 @@ class Crawler:
         print "#################################################################"
         print
         print "Please enter a query to search the lyle.smu.edu/~fmoore domain."
+        print "Search will display top " + str(N) + " results or all results that query is found on."
         print "Type 'quit' to exit the search engine"
         user_input = ""
         while True :
             user_input = raw_input("> ")
             if user_input == "quit" or user_input == "Quit" or user_input == "QUIT":
                 break
-            words = self.p.stem_word(re.sub("[^\w]", " ",  user_input).split())
-            words = [word.lower() for word in words]
-            common_docs = {} # []
-            for word in words :
-                if word in self.vocabulary:
-                    common_docs[word] = self.doc_term_matrix[self.vocabulary.index(word)]
-                else:
-                    common_docs[word] = [0] * 23
-            # for word in words :
-            #     info = self.all_words.get(word)
-            #     if info :
-            #         for tup in info :
-            #             if tup[0] not in common_docs:
-            #                 common_docs[tup[0]] = tup[1]
-            #             else :
-            #                 common_docs[tup[0]] += tup[1]
-            # sorted_common_docs = sorted(common_docs.items(), key=operator.itemgetter(1), reverse=True)
-            # if len(sorted_common_docs) == 0:
-            #     print '%s not found in domain\n' % user_input
-            #     continue
-            # print '  # Words on Page     Page'
-            # i = 0
-            # # print self.doc_term_matrix[self.vocabulary.index()]
-            # for tup in sorted_common_docs :
-            #     i += 1
-            #     if i > N: break
-            #     print ('    %i                 %s' % (tup[1], self.add_root_to_links([tup[0]])[0]))
-            # print
+            query = self.p.stem_word(re.sub("[^\w]", " ",  user_input).split())
+            query = [word.lower() for word in query]
+            for word in query :
+                if word in self.stopwords :
+                    query.remove(word)
+            query_vector = [self.calTFIDF(word, self.visited) for word in query]
+            docs = {}
+            for doc_name, ID in self.docs.iteritems() :
+                vector = []
+                for word in query :
+                    if word in self.vocabulary :
+                        if self.doc_term_matrix[self.vocabulary.index(word)][self.docs[self.add_root_if_not_there(doc_name)]] >= 1 :
+                            vector.append(1)
+                        else :
+                            vector.append(0)
+                docs[doc_name] = self.normalize_vector(vector)
+            rankings = {}
+            for url, doc_vec in docs.iteritems() :
+                rankings[url] = self.calculate_cosine_similarity(doc_vec, query_vector)
+
+            sorted_rankings = sorted(rankings.items(), key=operator.itemgetter(1), reverse=True)
+            i = 0
+            if sorted_rankings[0][1] == 0.0 :
+                print '%s not found in domain.\n' % user_input
+                continue
+            print '  Score:      Document:'
+            while i < N :
+                if sorted_rankings[i][1] == 0.0 :
+                    break
+                print '   {0:4f}'.format(sorted_rankings[i][1]) + '    {}'.format(sorted_rankings[i][0])
+                i += 1
+            print
         return
+
+    def normalize_vector(self, vector) :
+        """
+        This method will nomalize the vector to prep for calculate_cosine_similarity
+        """
+        if numpy.linalg.norm(vector) == 0.0 :
+            return [0.0 for i in vector]
+        else :
+            return [i / numpy.linalg.norm(vector) for i in vector]
+
+    def calculate_cosine_similarity(self, doc, query) :
+        """
+
+        """
+        if len(doc) != len(query) :
+            return 0.0
+        return numpy.dot(doc,query)
 
 
     def crawl(self, pages_to_index) :
@@ -453,6 +481,7 @@ class Crawler:
 
         # clean the links for visual appearance
         visited = set(self.add_root_to_links(visited))
+        self.visited = visited
         jpeg = self.add_root_to_links(jpeg)
         broken = self.add_root_to_links(broken)
         external = self.clean_external_links(external)
