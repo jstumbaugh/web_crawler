@@ -1,10 +1,11 @@
-import requests, robotparser, urlparse, re, os, string, sys, operator
+import requests, robotparser, urlparse, re, os, string, sys, operator, numpy
 from bs4 import BeautifulSoup
 from HTMLParser import HTMLParser
 from time import localtime, strftime
 from stemmer import PorterStemmer
 from collections import Counter
 from math import log10
+from scipy import spatial
 
 _ROOT_ = 'http://lyle.smu.edu/~fmoore/'
 
@@ -49,6 +50,12 @@ class Crawler:
         self.all_words = {}
         self.all_words_freq = {}
         self.tfidf = {}
+        self.vocabulary = []
+        # doc_term_matrix = [ [0,3,1,0...], [0,0,2,1...],... ]
+        #                       word1        word2
+        #                      0 on doc0, 3 on doc1, 1 on doc2...
+        self.doc_term_matrix = [[0] * 23 for n in range(805)]
+        self.docs = {}
 
     def clean_url(self, url) :
         """
@@ -197,6 +204,10 @@ class Crawler:
         text = self.p.stem_word(text)
         return text
 
+    def add_root_if_not_there(self, url) :
+        url = re.compile('http://lyle.smu.edu/~fmoore/').sub('', url)
+        return _ROOT_ + url
+
     def index(self, url, doc_words) :
         """
         Author: Nicole
@@ -208,10 +219,16 @@ class Crawler:
             if key not in self.all_words:
                 self.all_words[key] = [(url, doc_words[key])]
                 self.all_words_freq[key] = [1, doc_words[key]]
+                self.vocabulary.append(key)
+                # [word][docID] = word_freq
+                self.doc_term_matrix[self.vocabulary.index(key)][self.docs[self.add_root_if_not_there(url)]] = self.all_words[key][0][1]
             else:
                 self.all_words[key].append((url, doc_words[key]))
                 self.all_words_freq[key][0] += 1
                 self.all_words_freq[key][1] += doc_words[key]
+                for tup in self.all_words[key] :
+                    if tup[0] == str(url) :
+                        self.doc_term_matrix[self.vocabulary.index(key)][self.docs[self.add_root_if_not_there(url)]] = tup[1]
 
     def calTFIDF(self, word, visited) :
         """
@@ -239,7 +256,7 @@ class Crawler:
         f.write('\n\n')
 
         # Visited links
-        f.write('Visted Links: (' + str(len(visited)) + ' total)\n')
+        f.write('Visited Links: (' + str(len(visited)) + ' total)\n')
         for link in visited :
             f.write(link + '\n')
         f.write('\n')
@@ -268,6 +285,30 @@ class Crawler:
             f.write('The term ' + i[0] + ' occurs ' + str(i[1][1]) + ' times in ' + str(i[1][0]) + ' documents.\n')
 
         f.close()
+        f = open('term_document_frequency_matrix.txt', 'w')
+        f.write('Term/Document Frequency Matrix for Jason and Nicole\'s web crawler.\n')
+        f.write('Current Time: ')
+        f.write(strftime("%Y-%m-%d %H:%M:%S", localtime()))
+        f.write('\n\n               ') # 15 spaces
+        for key, val in self.docs.iteritems() :
+            f.write('{0:60}'.format(key))
+        f.write('\n')
+        for i in range(0,805) :
+            f.write('{0:15}'.format(self.vocabulary[i]))
+            for j in range(0,23) :
+                f.write('{}'.format(self.appears(self.doc_term_matrix[i][j])).ljust(60))
+            f.write('\n')
+        f.close()
+
+    def appears(self, i) :
+        """
+        This method will return 1 if the frequency (i) is greater than 1. It is
+        used for writing the term/document frequency matrix
+        """
+        if i >= 1 :
+            return 1
+        else:
+            return 0
 
     def clean_external_links(self, external) :
         """
@@ -288,8 +329,8 @@ class Crawler:
         Author: Jason
 
         This method will be the main query handler.
-        self.all_words format: [('spring'), [('url', 3), ('other_page', 4)] ]
-                                   word         tuples(url, frequency)
+        self.all_words format (var info below): [('spring'), [('url', 3), ('other_page', 4)] ]
+                                                  word         tuples(url, frequency)
         """
         print "#################################################################"
         print "################ Jason and Nicoles' Web Crawler #################"
@@ -304,26 +345,32 @@ class Crawler:
                 break
             words = self.p.stem_word(re.sub("[^\w]", " ",  user_input).split())
             words = [word.lower() for word in words]
-            common_docs = {}
+            common_docs = {} # []
             for word in words :
-                info = self.all_words.get(word)
-                if info :
-                    for tup in info :
-                        if tup[0] not in common_docs:
-                            common_docs[tup[0]] = tup[1]
-                        else :
-                            common_docs[tup[0]] += tup[1]
-            sorted_common_docs = sorted(common_docs.items(), key=operator.itemgetter(1), reverse=True)
-            if len(sorted_common_docs) == 0:
-                print '%s not found in domain\n' % user_input
-                continue
-            print '  # Words on Page     Page'
-            i = 0
-            for tup in sorted_common_docs :
-                i += 1
-                if i > N: break
-                print ('    %i                 %s' % (tup[1], self.add_root_to_links([tup[0]])[0]))
-            print
+                if word in self.vocabulary:
+                    common_docs[word] = self.doc_term_matrix[self.vocabulary.index(word)]
+                else:
+                    common_docs[word] = [0] * 23
+            # for word in words :
+            #     info = self.all_words.get(word)
+            #     if info :
+            #         for tup in info :
+            #             if tup[0] not in common_docs:
+            #                 common_docs[tup[0]] = tup[1]
+            #             else :
+            #                 common_docs[tup[0]] += tup[1]
+            # sorted_common_docs = sorted(common_docs.items(), key=operator.itemgetter(1), reverse=True)
+            # if len(sorted_common_docs) == 0:
+            #     print '%s not found in domain\n' % user_input
+            #     continue
+            # print '  # Words on Page     Page'
+            # i = 0
+            # # print self.doc_term_matrix[self.vocabulary.index()]
+            # for tup in sorted_common_docs :
+            #     i += 1
+            #     if i > N: break
+            #     print ('    %i                 %s' % (tup[1], self.add_root_to_links([tup[0]])[0]))
+            # print
         return
 
 
@@ -383,6 +430,9 @@ class Crawler:
                             broken.append(new_url)
                         else :
                             urlqueue.append(new_url)
+
+                # docs and page id
+                self.docs[self.add_root_if_not_there(url)] = pages_indexed
 
                 # checks to see if url is parsable aka .html, .htm, .txt
                 # if yes, then parse and index; if no, pass

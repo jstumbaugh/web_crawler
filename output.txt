@@ -1,7 +1,7 @@
 Output of Jason and Nicole's web crawler.
-Current Time: 2016-05-01 18:34:12
+Current Time: 2016-05-02 08:11:25
 
-Visted Links: (25 total)
+Visited Links: (25 total)
 http://lyle.smu.edu/~fmoore/misc/mockingbird2.html
 http://lyle.smu.edu/~fmoore/misc/algorithm-1-7.pdf
 http://lyle.smu.edu/~fmoore/misc/count_letters_duplicate.txt
