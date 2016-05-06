@@ -299,7 +299,7 @@ class Crawler:
         for key, val in self.docs.iteritems() :
             f.write('{0:60}'.format(key))
         f.write('\n')
-        for i in range(0,805) :
+        for i in range(0,len(self.vocabulary)) :
             f.write('{0:15}'.format(self.vocabulary[i]))
             for j in range(0,23) :
                 f.write('{}'.format(self.appears(self.doc_term_matrix[i][j])).ljust(60))

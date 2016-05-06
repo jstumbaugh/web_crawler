@@ -1,5 +1,5 @@
 Output of Jason and Nicole's web crawler.
-Current Time: 2016-05-02 13:10:46
+Current Time: 2016-05-06 13:45:16
 
 Visited Links: (25 total)
 http://lyle.smu.edu/~fmoore/misc/mockingbird2.html
@@ -64,18 +64,18 @@ The term 1 occurs 31 times in 5 documents.
 The term scout occurs 21 times in 5 documents.
 The term jem occurs 19 times in 5 documents.
 The term her occurs 19 times in 5 documents.
+The term cse occurs 16 times in 5 documents.
 The term atticu occurs 16 times in 4 documents.
 The term 0 occurs 15 times in 4 documents.
 The term 2 occurs 15 times in 5 documents.
-The term cse occurs 14 times in 5 documents.
 The term exampl occurs 14 times in 5 documents.
 The term chpt occurs 14 times in 1 documents.
+The term 2016 occurs 12 times in 6 documents.
 The term tom occurs 11 times in 3 documents.
 The term 3 occurs 11 times in 5 documents.
 The term mockingbird occurs 11 times in 5 documents.
+The term spring occurs 11 times in 5 documents.
 The term hmwk occurs 10 times in 1 documents.
-The term 2016 occurs 10 times in 5 documents.
 The term assign occurs 10 times in 3 documents.
 The term part occurs 10 times in 5 documents.
 The term j occurs 10 times in 1 documents.
-The term project occurs 9 times in 2 documents.
